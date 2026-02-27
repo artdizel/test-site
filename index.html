@@ -1,1 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <!-- Важно для адаптивности на мобильных устройствах -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<header class="header">
+    <div class="header-container">
+        <div class="logo">
+            <!-- Замените src на путь к вашему logo.png -->
+            <a href="#"><img src="logo.png" alt="Логотип компании"></a>
+        </div>
+
+        <div class="social-links">
+            <a href="#" target="_blank">FB</a>
+            <a href="#" target="_blank">VK</a>
+            <a href="#" target="_blank">IG</a>
+            <a href="#" target="_blank">TG</a>
+        </div>
+
+        <div class="contact-info">
+            <span>📞 +7 (123) 456-78-90</span>
+            <span>✉️ info@company.ru</span>
+        </div>
+    </div>
+</header>
+
+<nav class="nav-menu">
+    <ul class="menu-list">
+        <li><a href="#">Главная</a></li>
+        <li><a href="#">О нас</a></li>
+        <li><a href="#">Услуги</a></li>
+        <li><a href="#">Портфолио</a></li>
+        <li><a href="#">Контакты</a></li>
+    </ul>
+</nav>
+
+<main class="main-content">
+    <section class="content">
+        <div class="image-grid">
+            <!-- Генерация 12 изображений. Ссылки-заглушки # -->
+            <div class="image-item"><a href="#"><img src="img.jpg" alt="Изображение 1"></a></div>
+            <div class="image-item"><a href="#"><img src="img.jpg" alt="Изображение 2"></a></div>
+            <div class="image-item"><a href="#"><img src="img.jpg" alt="Изображение 3"></a></div>
+            <div class="image-item"><a href="#"><img src="img.jpg" alt="Изображение 4"></a></div>
+            <div class="image-item"><a href="#"><img src="img.jpg" alt="Изображение 5"></a></div>
+            <div class="image-item"><a href="#"><img src="img.jpg" alt="Изображение 6"></a></div>
+            <div class="image-item"><a href="#"><img src="img.jpg" alt="Изображение 7"></a></div>
+            <div class="image-item"><a href="#"><img src="img.jpg" alt="Изображение 8"></a></div>
+            <div class="image-item"><a href="#"><img src="img.jpg" alt="Изображение 9"></a></div>
+            <div class="image-item"><a href="#"><img src="img.jpg" alt="Изображение 10"></a></div>
+            <div class="image-item"><a href="#"><img src="img.jpg" alt="Изображение 11"></a></div>
+            <div class="image-item"><a href="#"><img src="img.jpg" alt="Изображение 12"></a></div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-logo">
+            <!-- Замените src на путь к вашему logo.png -->
+            <a href="#"><img src="logo.png" alt="Логотип компании"></a>
+        </div>
+
+        <div class="footer-copyright">
+            &copy; 2026 Все права защищены
+        </div>
+
+        <div class="footer-contact">
+            <span>📞 +7 (123) 456-78-90</span>
+            <span>✉️ info@company.ru</span>
+        </div>
+    </div>
+</footer>
+
+<!-- Прямо перед закрывающим тегом body -->
+    <script>
+        // Этот код выполнится после полной загрузки всей HTML-структуры
+        document.addEventListener('DOMContentLoaded', function() {
+            var images = document.getElementsByTagName('img');
+            for (var i = 0; i < images.length; i++) {
+                images[i].setAttribute('oncontextmenu', 'return false;');
+            }
+        });
+    </script>
+
+</body>
+</html>
