@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Категории товаров</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-container">
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="Логотип"></a>
+        </div>
+        <div class="social-links">
+            <a href="#" target="_blank">ВК</a>
+            <a href="#" target="_blank">MAX</a>
+            <a href="#" target="_blank">ТГ</a>
+        </div>
+        <div class="contact-info">
+            <span>📞 +7 (123) 456-78-90</span>
+            <span>✉️ info@company.ru</span>
+        </div>
+    </div>
+</header>
+
+<nav class="nav-menu">
+    <ul class="menu-list">
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="#">О нас</a></li>
+        <li><a href="#">Услуги</a></li>
+        <li><a href="#">Портфолио</a></li>
+        <li><a href="#">Контакты</a></li>
+    </ul>
+</nav>
+
+<main class="main-content">
+    <section class="content">
+        <h1 class="page-title">Категории товаров</h1>
+        <div class="image-grid" id="categories-container">
+            <!-- Категории будут загружены динамически -->
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-logo">
+            <a href="index.html"><img src="images/logo.png" alt="Логотип"></a>
+        </div>
+        <div class="footer-copyright">
+            &copy; 2026 Все права защищены
+        </div>
+        <div class="footer-contact">
+            <span>📞 +7 (123) 456-78-90</span>
+            <span>✉️ info@company.ru</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Загружаем категории
+        fetch('products.json')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('categories-container');
+                container.innerHTML = ''; // Очищаем контейнер
+                
+                // Создаем карточки для каждой категории
+                data.categories.forEach(category => {
+                    const categoryItem = document.createElement('div');
+                    categoryItem.className = 'image-item';
+                    categoryItem.innerHTML = `
+                        <a href="category.html?id=${category.id}">
+                            <img src="${category.image}" alt="${category.name}">
+                            <div class="item-overlay">
+                                <h3>${category.name}</h3>
+                                <p>${category.description}</p>
+                            </div>
+                        </a>
+                    `;
+                    container.appendChild(categoryItem);
+                });
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки категорий:', error);
+                document.getElementById('categories-container').innerHTML = 
+                    '<p class="error">Ошибка загрузки данных</p>';
+            });
+    });
+</script>
+
+</body>
+</html>

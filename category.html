@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Товары категории</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-container">
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="Логотип"></a>
+        </div>
+        <div class="social-links">
+            <a href="#" target="_blank">ВК</a>
+            <a href="#" target="_blank">MAX</a>
+            <a href="#" target="_blank">ТГ</a>
+        </div>
+        <div class="contact-info">
+            <span>📞 +7 (123) 456-78-90</span>
+            <span>✉️ info@company.ru</span>
+        </div>
+    </div>
+</header>
+
+<nav class="nav-menu">
+    <ul class="menu-list">
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="#">О нас</a></li>
+        <li><a href="#">Услуги</a></li>
+        <li><a href="#">Портфолио</a></li>
+        <li><a href="#">Контакты</a></li>
+    </ul>
+</nav>
+
+<main class="main-content">
+    <section class="content">
+        <h1 class="page-title" id="category-title">Загрузка...</h1>
+        <div class="image-grid" id="products-container">
+            <!-- Товары будут загружены динамически -->
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-logo">
+            <a href="index.html"><img src="images/logo.png" alt="Логотип"></a>
+        </div>
+        <div class="footer-copyright">
+            &copy; 2026 Все права защищены
+        </div>
+        <div class="footer-contact">
+            <span>📞 +7 (123) 456-78-90</span>
+            <span>✉️ info@company.ru</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Получаем ID категории из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoryId = parseInt(urlParams.get('id'));
+        
+        if (!categoryId) {
+            window.location.href = 'index.html';
+            return;
+        }
+        
+        // Загружаем данные
+        fetch('products.json')
+            .then(response => response.json())
+            .then(data => {
+                // Находим категорию
+                const category = data.categories.find(c => c.id === categoryId);
+                if (!category) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                // Устанавливаем заголовок
+                document.getElementById('category-title').textContent = category.name;
+                
+                // Фильтруем товары по категории
+                const categoryProducts = data.products.filter(p => p.categoryId === categoryId);
+                
+                const container = document.getElementById('products-container');
+                container.innerHTML = '';
+                
+                if (categoryProducts.length === 0) {
+                    container.innerHTML = '<p class="no-products">В этой категории пока нет товаров</p>';
+                    return;
+                }
+                
+                // Создаем карточки товаров
+                categoryProducts.forEach(product => {
+                    const productItem = document.createElement('div');
+                    productItem.className = 'image-item';
+                    productItem.innerHTML = `
+                        <a href="product.html?id=${product.id}">
+                            <img src="${product.image}" alt="${product.name}">
+                            <div class="item-overlay">
+                                <h3>${product.name}</h3>
+                                <p class="price">${product.price.toLocaleString()} ₽</p>
+                            </div>
+                        </a>
+                    `;
+                    container.appendChild(productItem);
+                });
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки товаров:', error);
+                document.getElementById('products-container').innerHTML = 
+                    '<p class="error">Ошибка загрузки данных</p>';
+            });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,246 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Категория 1",
+      "image": "images/1.jpg",
+      "description": "Описание категории"
+    },
+    {
+      "id": 2,
+      "name": "Категория 2",
+      "image": "images/2.jpg",
+      "description": "Описание категории"
+    },
+    {
+      "id": 3,
+      "name": "Категория 3",
+      "image": "images/3.jpg",
+      "description": "Описание категории"
+    },
+    {
+      "id": 4,
+      "name": "Категория 4",
+      "image": "images/1.jpg",
+      "description": "Описание категории"
+    },
+    {
+      "id": 5,
+      "name": "Категория 5",
+      "image": "images/2.jpg",
+      "description": "Описание категории"
+    },
+    {
+      "id": 6,
+      "name": "Категория 6",
+      "image": "images/1.jpg",
+      "description": "Описание категории"
+    },
+    {
+      "id": 7,
+      "name": "Категория 7",
+      "image": "images/1.jpg",
+      "description": "Описание категории"
+    },
+    {
+      "id": 8,
+      "name": "Категория 8",
+      "image": "images/3.jpg",
+      "description": "Описание категории"
+    }
+  ],
+  "products": [
+    {
+      "id": 101,
+      "categoryId": 1,
+      "name": "Товар 101",
+      "price": 999,
+      "image": "images/3.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 102,
+      "categoryId": 1,
+      "name": "Товар 102",
+      "price": 999,
+      "image": "images/1.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 103,
+      "categoryId": 1,
+      "name": "Товар 103",
+      "price": 999,
+      "image": "images/2.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 104,
+      "categoryId": 1,
+      "name": "Товар 104",
+      "price": 999,
+      "image": "images/3.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 105,
+      "categoryId": 1,
+      "name": "Товар 105",
+      "price": 999,
+      "image": "images/1.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 106,
+      "categoryId": 1,
+      "name": "Товар 106",
+      "price": 999,
+      "image": "images/2.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 107,
+      "categoryId": 1,
+      "name": "Товар 107",
+      "price": 999,
+      "image": "images/3.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 108,
+      "categoryId": 1,
+      "name": "Товар 108",
+      "price": 999,
+      "image": "images/1.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 201,
+      "categoryId": 2,
+      "name": "Товар 201",
+      "price": 999,
+      "image": "images/2.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 202,
+      "categoryId": 2,
+      "name": "Товар 202",
+      "price": 999,
+      "image": "images/3.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 203,
+      "categoryId": 2,
+      "name": "Товар 203",
+      "price": 999,
+      "image": "images/1.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 204,
+      "categoryId": 2,
+      "name": "Товар 204",
+      "price": 999,
+      "image": "images/2.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 205,
+      "categoryId": 2,
+      "name": "Товар 205",
+      "price": 999,
+      "image": "images/3.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 206,
+      "categoryId": 2,
+      "name": "Товар 206",
+      "price": 999,
+      "image": "images/1.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 207,
+      "categoryId": 2,
+      "name": "Товар 207",
+      "price": 999,
+      "image": "images/2.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    },
+    {
+      "id": 208,
+      "categoryId": 2,
+      "name": "Товар 208",
+      "price": 999,
+      "image": "images/3.jpg",
+      "description": "Описание товара",
+      "specs": {
+        "brand": "Бренд",
+        "model": "Модель"
+      }
+    }
+  ]
+}

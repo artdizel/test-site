@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карточка товара</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Дополнительные стили для карточки товара */
+        .product-detail {
+            display: flex;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .product-image {
+            flex: 1;
+            max-width: 500px;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        .product-info {
+            flex: 1;
+        }
+        
+        .product-info h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .product-price {
+            font-size: 28px;
+            color: #ff6600;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .product-description {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #666;
+        }
+        
+        .product-specs {
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .product-specs h3 {
+            margin-bottom: 15px;
+        }
+        
+        .product-specs table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .product-specs td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .product-specs td:first-child {
+            font-weight: bold;
+            width: 30%;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            color: #ff6600;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .product-detail {
+                flex-direction: column;
+            }
+            
+            .product-image {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-container">
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="Логотип"></a>
+        </div>
+        <div class="social-links">
+            <a href="#" target="_blank">ВК</a>
+            <a href="#" target="_blank">MAX</a>
+            <a href="#" target="_blank">ТГ</a>
+        </div>
+        <div class="contact-info">
+            <span>📞 +7 (123) 456-78-90</span>
+            <span>✉️ info@company.ru</span>
+        </div>
+    </div>
+</header>
+
+<nav class="nav-menu">
+    <ul class="menu-list">
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="#">О нас</a></li>
+        <li><a href="#">Услуги</a></li>
+        <li><a href="#">Портфолио</a></li>
+        <li><a href="#">Контакты</a></li>
+    </ul>
+</nav>
+
+<main class="main-content">
+    <div class="content">
+        <a href="javascript:history.back()" class="back-link">← Назад</a>
+        <div id="product-container">
+            <!-- Карточка товара будет загружена сюда -->
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-logo">
+            <a href="index.html"><img src="images/logo.png" alt="Логотип"></a>
+        </div>
+        <div class="footer-copyright">
+            &copy; 2026 Все права защищены
+        </div>
+        <div class="footer-contact">
+            <span>📞 +7 (123) 456-78-90</span>
+            <span>✉️ info@company.ru</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('id'));
+        
+        if (!productId) {
+            window.location.href = 'index.html';
+            return;
+        }
+        
+        fetch('products.json')
+            .then(response => response.json())
+            .then(data => {
+                const product = data.products.find(p => p.id === productId);
+                
+                if (!product) {
+                    document.getElementById('product-container').innerHTML = 
+                        '<p class="error">Товар не найден</p>';
+                    return;
+                }
+                
+                // Находим категорию товара для ссылки "назад"
+                const category = data.categories.find(c => c.id === product.categoryId);
+                
+                // Формируем HTML карточки товара
+                let specsHTML = '';
+                if (product.specs) {
+                    specsHTML = '<div class="product-specs"><h3>Характеристики</h3><table>';
+                    for (const [key, value] of Object.entries(product.specs)) {
+                        specsHTML += `<tr><td>${key}</td><td>${value}</td></tr>`;
+                    }
+                    specsHTML += '</table></div>';
+                }
+                
+                const productHTML = `
+                    <div class="product-detail">
+                        <div class="product-image">
+                            <img src="${product.image}" alt="${product.name}">
+                        </div>
+                        <div class="product-info">
+                            <h1>${product.name}</h1>
+                            <div class="product-price">${product.price.toLocaleString()} ₽</div>
+                            <div class="product-description">${product.description}</div>
+                            ${specsHTML}
+                            <a href="category.html?id=${product.categoryId}" class="back-link">← Все товары категории "${category.name}"</a>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('product-container').innerHTML = productHTML;
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки товара:', error);
+                document.getElementById('product-container').innerHTML = 
+                    '<p class="error">Ошибка загрузки данных</p>';
+            });
+    });
+</script>
+
+</body>
+</html>
