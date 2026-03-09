@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Все статьи</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-container">
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="Логотип"></a>
+        </div>
+        <div class="social-links">
+            <a href="#" target="_blank">ВК</a>
+            <a href="#" target="_blank">MAX</a>
+            <a href="#" target="_blank">ТГ</a>
+        </div>
+        <div class="contact-info">
+            <span>📞 +7 (123) 456-78-90</span>
+            <span>✉️ info@company.ru</span>
+        </div>
+    </div>
+</header>
+
+<nav class="nav-menu">
+    <ul class="menu-list">
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="#">О нас</a></li>
+        <li><a href="#">Услуги</a></li>
+        <li><a href="#">Портфолио</a></li>
+        <li><a href="#">Контакты</a></li>
+    </ul>
+</nav>
+
+<main class="main-content">
+    <section class="content">
+        <h1 class="page-title">Все статьи</h1>
+        <div class="articles-list" id="all-articles-container">
+            <!-- Сюда загрузятся все статьи -->
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-logo">
+            <a href="index.html"><img src="images/logo.png" alt="Логотип"></a>
+        </div>
+        <div class="footer-copyright">
+            &copy; 2026 Все права защищены
+        </div>
+        <div class="footer-contact">
+            <span>📞 +7 (123) 456-78-90</span>
+            <span>✉️ info@company.ru</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Список всех txt файлов
+        const allArticleFiles = [
+            '001.txt',
+            '002.txt',
+            '003.txt',
+            '004.txt',
+            '005.txt'
+        ];
+
+        const container = document.getElementById('all-articles-container');
+        
+        if (!container) return;
+
+        // Загружаем все статьи
+        allArticleFiles.forEach(filename => {
+            fetch(`articles/${filename}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Файл ${filename} не найден`);
+                    }
+                    return response.text();
+                })
+                .then(content => {
+                    const articleElement = document.createElement('div');
+                    articleElement.className = 'article-item';
+                    
+                    articleElement.innerHTML = `
+                        <div class="article-content">
+                            ${content.replace(/\n/g, '<br>')}
+                        </div>
+                    `;
+                    
+                    container.appendChild(articleElement);
+                })
+                .catch(error => {
+                    console.warn(`Не удалось загрузить ${filename}:`, error);
+                });
+        });
+    });
+</script>
+
+<!-- Те же стили, что и на главной -->
+<style>
+    .articles-list {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .article-item {
+        margin-bottom: 25px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        border-left: 4px solid #007bff;
+    }
+    
+    .article-content {
+        font-size: 15px;
+        line-height: 1.4;
+        color: #333;
+        font-family: Arial, sans-serif;
+    }
+    
+    .article-content br {
+        display: block;
+        content: "";
+        margin: 3px 0;
+    }
+    
+    .page-title {
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+</style>
+
+</body>
+</html>
