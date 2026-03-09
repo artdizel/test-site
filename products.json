@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Категория 1",
-      "image": "images/1.jpg",
+      "image": "images/7.png",
       "description": "Описание категории"
     },
     {
@@ -244,5 +244,6 @@
     }
   ]
 }
+
 
 
