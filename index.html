@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Категории товаров</title>
+    <title>Категории товаров и статьи</title>
     <link rel="stylesheet" href="style.css">
+    <!-- запуск сервера из папки проекта: python -m http.server 8000 -->
+    <!-- открыть в браузере http://localhost:8000/index_news.html -->
 </head>
 <body>
 
@@ -36,10 +38,23 @@
 </nav>
 
 <main class="main-content">
+    <!-- Секция с категориями товаров -->
     <section class="content">
         <h1 class="page-title">Категории товаров</h1>
         <div class="image-grid" id="categories-container">
             <!-- Категории будут загружены динамически -->
+        </div>
+    </section>
+
+    <!-- Секция с последними статьями -->
+    <section class="content articles-section" id="articles-section">
+        <h2 class="section-title">Истории которые носят</h2>
+        <div class="articles-list" id="articles-container">
+            <!-- Сюда загрузятся последние 3 статьи -->
+        </div>
+        <!-- Ссылка на все статьи (появится, если статей больше 3) -->
+        <div id="all-articles-link" style="text-align: center; margin-top: 20px; display: none;">
+            <a href="articles.html" class="more-link">Читать все статьи →</a>
         </div>
     </section>
 </main>
@@ -59,38 +74,218 @@
     </div>
 </footer>
 
+<!-- ПОДКЛЮЧАЕМ ВНЕШНИЙ ФАЙЛ С ДАННЫМИ СТАТЕЙ -->
+<!-- <script src="articles-data.js?v=20260309"></script> -->
+<script src="articles-data.js" charset="UTF-8"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Загружаем категории
+        console.log('DOM загружен');
+        console.log('articlesList из внешнего файла:', typeof articlesList !== 'undefined' ? 'загружен (' + articlesList.length + ' статей)' : 'не определен');
+        
+        // ===== ЗАГРУЗКА КАТЕГОРИЙ ИЗ JSON =====
         fetch('products.json')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка загрузки products.json');
+                }
+                return response.json();
+            })
             .then(data => {
-                const container = document.getElementById('categories-container');
-                container.innerHTML = ''; // Очищаем контейнер
-                
-                // Создаем карточки для каждой категории
-                data.categories.forEach(category => {
-                    const categoryItem = document.createElement('div');
-                    categoryItem.className = 'image-item';
-                    categoryItem.innerHTML = `
-                        <a href="category.html?id=${category.id}">
-                            <img src="${category.image}" alt="${category.name}">
-                            <div class="item-overlay">
-                                <h3>${category.name}</h3>
-                                <p>${category.description}</p>
-                            </div>
-                        </a>
-                    `;
-                    container.appendChild(categoryItem);
-                });
+                // Загружаем категории товаров
+                if (data.categories && data.categories.length > 0) {
+                    const container = document.getElementById('categories-container');
+                    container.innerHTML = ''; // Очищаем контейнер
+                    
+                    data.categories.forEach(category => {
+                        const categoryItem = document.createElement('div');
+                        categoryItem.className = 'image-item';
+                        categoryItem.innerHTML = `
+                            <a href="category.html?id=${category.id}">
+                                <img src="${category.image}" alt="${category.name}">
+                                <div class="item-overlay">
+                                    <h3>${category.name}</h3>
+                                    <p>${category.description || ''}</p>
+                                </div>
+                            </a>
+                        `;
+                        container.appendChild(categoryItem);
+                    });
+                }
             })
             .catch(error => {
                 console.error('Ошибка загрузки категорий:', error);
                 document.getElementById('categories-container').innerHTML = 
-                    '<p class="error">Ошибка загрузки данных</p>';
+                    '<p class="error">Ошибка загрузки категорий</p>';
             });
+
+        // ===== ЗАГРУЗКА СТАТЕЙ =====
+        function loadArticles() {
+            console.log('Загрузка статей...');
+            
+            const articlesContainer = document.getElementById('articles-container');
+            const articlesSection = document.getElementById('articles-section');
+            const allArticlesLink = document.getElementById('all-articles-link');
+            
+            if (!articlesContainer) {
+                console.log('Контейнер статей не найден');
+                return;
+            }
+
+            // Проверяем, что articlesList существует (из articles-data.js)
+            if (typeof articlesList === 'undefined') {
+                console.log('articlesList не определен!');
+                if (articlesSection) articlesSection.style.display = 'block';
+                articlesContainer.innerHTML = '<p class="error">Ошибка загрузки списка статей. Проверьте articles-data.js</p>';
+                return;
+            }
+            
+            if (articlesList.length === 0) {
+                console.log('Список статей пуст');
+                if (articlesSection) articlesSection.style.display = 'block';
+                articlesContainer.innerHTML = '<p class="error">Список статей пуст</p>';
+                return;
+            }
+
+            console.log('Список статей загружен, количество:', articlesList.length);
+
+            // Показываем секцию
+            if (articlesSection) articlesSection.style.display = 'block';
+
+            // Сортируем по дате (новые сверху) и берем последние 3
+            const sortedArticles = [...articlesList]
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 3);
+
+            console.log('Отображаем статьи:', sortedArticles.map(a => a.title));
+
+            articlesContainer.innerHTML = '';
+
+            // Загружаем каждую статью
+            sortedArticles.forEach(article => {
+                fetch(`articles/${article.filename}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Статья ${article.filename} не найдена`);
+                        }
+                        return response.text();
+                    })
+                    .then(content => {
+                        const articleElement = document.createElement('div');
+                        articleElement.className = 'article-item';
+                        
+                        // Форматируем дату
+                        const formattedDate = new Date(article.date).toLocaleDateString('ru-RU', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                        });
+                        
+                        articleElement.innerHTML = `
+                            <h3 class="article-title">${article.title}</h3>
+                            <div class="article-meta">📅 ${formattedDate}</div>
+                            <div class="article-content">
+                                ${content.replace(/\n/g, '<br>')}
+                            </div>
+                        `;
+                        
+                        articlesContainer.appendChild(articleElement);
+                    })
+                    .catch(error => {
+                        console.warn(`Не удалось загрузить ${article.filename}:`, error);
+                    });
+            });
+
+            // Показываем ссылку "Все статьи", если статей больше 3
+            if (articlesList.length > 3 && allArticlesLink) {
+                allArticlesLink.style.display = 'block';
+            }
+        }
+
+        // Вызываем загрузку статей
+        loadArticles();
     });
 </script>
+
+<!-- Стили для компактного отображения статей -->
+<style>
+    /* Стили для статей */
+    .articles-section {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 2px solid #eee;
+    }
+    
+    .section-title {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    
+    .articles-list {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .article-item {
+        margin-bottom: 25px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        border-left: 4px solid #007bff;
+    }
+    
+    .article-title {
+        font-size: 20px;
+        color: #007bff;
+        margin: 0 0 5px 0;
+    }
+    
+    .article-meta {
+        font-size: 13px;
+        color: #999;
+        margin-bottom: 8px;
+        font-style: italic;
+    }
+    
+    .article-content {
+        font-size: 15px;
+        line-height: 1.4;
+        color: #333;
+        font-family: Arial, sans-serif;
+    }
+    
+    .article-content br {
+        display: block;
+        content: "";
+        margin: 3px 0;
+    }
+    
+    .more-link {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+        font-size: 14px;
+    }
+    
+    .more-link:hover {
+        background-color: #0056b3;
+    }
+    
+    .error {
+        color: #dc3545;
+        text-align: center;
+        padding: 15px;
+        background-color: #f8d7da;
+        border-radius: 5px;
+    }
+</style>
 
 </body>
 </html>
