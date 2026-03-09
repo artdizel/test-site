@@ -9,7 +9,7 @@
     {
       "id": 2,
       "name": "Категория 2",
-      "image": "images/2.jpg",
+      "image": "images/4.jpg",
       "description": "Описание категории"
     },
     {
@@ -244,3 +244,4 @@
     }
   ]
 }
+
